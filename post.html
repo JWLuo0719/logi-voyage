@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章详情 | Neon Pulse</title>
+  <meta name="description" content="查看个人博客中的文章详情内容。">
+  <link rel="stylesheet" href="styles/site.css">
+</head>
+<body data-page="post">
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span class="brand-text">
+          <strong>Neon Pulse</strong>
+          <small>Personal Blog</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-label="切换导航">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">首页</a>
+        <a href="posts.html">文章</a>
+        <a href="profile.html">关于我</a>
+        <a href="index.html#contact">联系</a>
+      </nav>
+    </header>
+
+    <main id="post-page" class="post-page"></main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>Neon Pulse</strong>
+        <p>文章详情页支持通过参数切换不同内容，适合扩展更多文章。</p>
+      </div>
+      <div class="footer-links">
+        <a href="posts.html">返回文章列表</a>
+        <a href="profile.html">作者信息</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="scripts/data.js"></script>
+  <script src="scripts/site.js"></script>
+  <script src="scripts/post.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章列表 | Neon Pulse</title>
+  <meta name="description" content="浏览个人博客中的文章列表，支持分类筛选与关键词搜索。">
+  <link rel="stylesheet" href="styles/site.css">
+</head>
+<body data-page="posts">
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span class="brand-text">
+          <strong>Neon Pulse</strong>
+          <small>Personal Blog</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-label="切换导航">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">首页</a>
+        <a class="is-active" href="posts.html">文章</a>
+        <a href="profile.html">关于我</a>
+        <a href="index.html#contact">联系</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-banner">
+        <p class="eyebrow">Post Directory</p>
+        <h1>把学习、创作和项目过程都整理成可以回看的内容。</h1>
+        <p>文章列表支持关键词搜索和分类筛选，方便读者快速找到感兴趣的内容。</p>
+      </section>
+
+      <section class="filters-panel">
+        <div class="search-box">
+          <label for="search-input">搜索文章</label>
+          <input id="search-input" type="search" placeholder="输入标题、关键词或摘要">
+        </div>
+        <div class="filter-group">
+          <span>分类筛选</span>
+          <div id="category-filters" class="chip-row"></div>
+        </div>
+      </section>
+
+      <section class="results-meta">
+        <p id="results-count">共 0 篇文章</p>
+      </section>
+
+      <section id="post-list" class="post-grid"></section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>Neon Pulse</strong>
+        <p>用稳定的多页面结构承载持续更新的内容。</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">返回首页</a>
+        <a href="profile.html">查看个人资料</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="scripts/data.js"></script>
+  <script src="scripts/site.js"></script>
+  <script src="scripts/posts.js"></script>
+</body>
+</html>
