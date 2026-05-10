@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neon Pulse | 个人博客</title>
-  <meta name="description" content="一个聚焦前端开发、设计观察与校园创作的赛博朋克风个人博客。">
+  <title>Logi Voyage | 个人主页</title>
+  <meta
+    name="description"
+    content="一个清爽的个人主页型博客，用来整理前端练习、课程作业、项目记录和持续写作。"
+  >
   <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/home.css">
 </head>
-<body data-page="home">
-  <div class="page-shell">
+<body class="home-page" data-page="home">
+  <div class="page-shell home-shell">
     <header class="site-header">
       <a class="brand" href="index.html">
         <span class="brand-mark"></span>
         <span class="brand-text">
-          <strong>Neon Pulse</strong>
+          <strong>Logi Voyage</strong>
           <small>Personal Blog</small>
         </span>
       </a>
@@ -29,86 +33,105 @@
       </nav>
     </header>
 
-    <main>
-      <section class="hero-panel">
+    <main class="home-main">
+      <section class="hero-panel home-hero">
         <div class="hero-copy">
-          <p class="eyebrow">Front-end Student Creator</p>
-          <h1>把代码、设计和校园灵感一起写进一座霓虹城市。</h1>
+          <p class="eyebrow">Personal Blog</p>
+          <h1>把前端练习、课程作业和项目记录放在一个更清爽的首页里。</h1>
           <p class="hero-summary">
-            这里记录我的前端练习、学习笔记、设计观察和个人项目，也展示一个正在持续迭代的个人博客作品。
+            这个站点用于整理我在前端开发、页面结构、设计观察和课程项目中的持续练习。
+            首页不再强调概念视觉，而是把文章入口、个人方向和内容层级放在更前面。
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="posts.html">浏览文章</a>
+            <a class="button button-primary" href="posts.html">查看文章</a>
             <a class="button button-secondary" href="profile.html">认识我</a>
           </div>
           <ul class="hero-stats">
-            <li><strong>12</strong><span>篇内容策划</span></li>
-            <li><strong>4</strong><span>核心页面</span></li>
-            <li><strong>100%</strong><span>响应式布局</span></li>
+            <li><strong>12</strong><span>篇文章记录</span></li>
+            <li><strong>4</strong><span>个核心页面</span></li>
+            <li><strong>长期</strong><span>持续更新中</span></li>
           </ul>
         </div>
-        <div class="hero-visual">
-          <img src="assets/hero-cyberpunk-16x9.png" alt="赛博朋克风个人博客首页插图">
-          <div class="hero-overlay-card">
-            <span>Live Theme</span>
-            <strong>Blue / Orange Cyber City</strong>
-            <small>为课程大作业定制的视觉主形象</small>
-          </div>
-        </div>
-      </section>
 
-      <section class="section-grid">
-        <div class="section-heading">
-          <p class="eyebrow">Weekly Signals</p>
-          <h2>博客内容方向</h2>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-card">
-            <span class="feature-tag">开发实践</span>
-            <h3>前端页面拆解</h3>
-            <p>分析页面布局、动效和交互逻辑，练习从视觉到结构的实现路径。</p>
+        <aside class="hero-aside">
+          <article class="profile-card home-profile-card">
+            <div class="home-avatar" aria-hidden="true">LV</div>
+            <div class="home-profile-copy">
+              <p class="eyebrow">Current Focus</p>
+              <h3>前端界面、内容结构、项目整理</h3>
+              <p>更关注页面如何组织信息，以及内容能不能被稳定地阅读和回看。</p>
+            </div>
           </article>
-          <article class="feature-card">
-            <span class="feature-tag">学习记录</span>
-            <h3>课堂与自学笔记</h3>
-            <p>整理 HTML、CSS、JavaScript 的知识点，把抽象概念变成可复用经验。</p>
+
+          <article class="sidebar-card home-note-card">
+            <span class="post-category">Now</span>
+            <h3>首页基调调整</h3>
+            <p>减少强风格视觉，换成更明确的内容入口、更大的留白和更稳定的版面节奏。</p>
+            <ul class="plain-list compact-list">
+              <li>文章优先</li>
+              <li>项目并列展示</li>
+              <li>保留个人表达</li>
+            </ul>
           </article>
-          <article class="feature-card">
-            <span class="feature-tag">创作灵感</span>
-            <h3>设计观察</h3>
-            <p>收集色彩、排版与交互案例，尝试形成自己的审美判断和表达方式。</p>
-          </article>
-        </div>
+        </aside>
       </section>
 
       <section class="section-grid">
         <div class="section-heading section-heading-inline">
           <div>
-            <p class="eyebrow">Featured Posts</p>
-            <h2>精选文章</h2>
+            <p class="eyebrow">Latest Posts</p>
+            <h2>最近更新</h2>
           </div>
           <a class="text-link" href="posts.html">查看全部</a>
         </div>
         <div id="featured-posts" class="post-grid"></div>
       </section>
 
+      <section class="section-grid">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Blog Structure</p>
+            <h2>这个博客现在怎么组织内容</h2>
+          </div>
+        </div>
+        <div class="feature-grid home-feature-grid">
+          <article class="feature-card">
+            <span class="feature-tag">文章</span>
+            <h3>记录过程</h3>
+            <p>围绕 HTML、CSS、JavaScript 和页面结构整理学习笔记，尽量写成可复用的经验。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-tag">项目</span>
+            <h3>展示作品</h3>
+            <p>把课程作业、小型练习和个人页面统一收纳，形成完整的作品入口。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-tag">关于</span>
+            <h3>保留个人表达</h3>
+            <p>在内容之外保留一个更安静的空间，用来放学习方向、节奏和审美偏好。</p>
+          </article>
+        </div>
+      </section>
+
       <section class="section-grid story-panel">
         <div class="section-heading">
-          <p class="eyebrow">Design Notes</p>
-          <h2>这个博客的目标</h2>
+          <div>
+            <p class="eyebrow">Why This Shape</p>
+            <h2>为什么首页要从“海报感”改成“目录感”</h2>
+          </div>
         </div>
-        <div class="story-layout">
+        <div class="story-layout home-story-layout">
           <article class="story-card">
-            <h3>可展示</h3>
-            <p>既能作为课程作业提交，也能成为个人作品集里的一个完整案例。</p>
+            <h3>更容易读</h3>
+            <p>首页先承担引导作用，让访客先看到我写什么、做什么，再决定往哪里继续看。</p>
           </article>
           <article class="story-card">
-            <h3>可扩展</h3>
-            <p>文章数据、页面结构和样式系统分离，后续继续加内容不会推翻重来。</p>
+            <h3>更容易扩展</h3>
+            <p>后续不管增加文章、项目还是归档页，都能沿着同一套信息结构继续生长。</p>
           </article>
           <article class="story-card">
-            <h3>可表达</h3>
-            <p>不做模板味太重的页面，而是用统一的霓虹视觉把“个人博客”做出辨识度。</p>
+            <h3>更像个人主页</h3>
+            <p>它不只是课程作业首页，也应该是一个长期可维护、能体现个人方向的起点。</p>
           </article>
         </div>
       </section>
@@ -116,12 +139,12 @@
 
     <footer class="site-footer" id="contact">
       <div>
-        <strong>Neon Pulse</strong>
-        <p>前端学习记录、设计观察与校园项目实践。</p>
+        <strong>Logi Voyage</strong>
+        <p>记录前端练习、项目过程与持续写作的个人主页型博客。</p>
       </div>
       <div class="footer-links">
         <a href="mailto:student@example.com">student@example.com</a>
-        <a href="profile.html">个人资料页</a>
+        <a href="profile.html">个人资料</a>
       </div>
     </footer>
   </div>
