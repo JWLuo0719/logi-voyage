@@ -84,6 +84,7 @@
   document.title = currentPost.title + " | Logi Voyage";
 
   function createArticleBlocks(blocks) {
+    // 支持来自共享数据结构的普通段落和项目符号摘要.
     return blocks.map(function (block) {
       var parts = ['<section class="article-block">', "<h2>" + block.heading + "</h2>"];
 

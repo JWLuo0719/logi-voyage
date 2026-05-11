@@ -10,6 +10,7 @@
     return;
   }
 
+  // 从共享的帖子数据集中构建类别,以避免重复标记.
   var categories = ["全部"].concat(
     posts
       .map(function (post) { return post.category; })
@@ -41,6 +42,7 @@
 
   function render() {
     var keyword = searchInput.value.trim().toLowerCase();
+    // 结合类别和关键词过滤
     var filtered = posts.filter(function (post) {
       var matchesCategory = activeCategory === "全部" || post.category === activeCategory;
       var haystack = [post.title, post.summary, post.category].join(" ").toLowerCase();
