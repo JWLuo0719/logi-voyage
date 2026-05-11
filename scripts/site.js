@@ -14,7 +14,7 @@
       '<article class="post-card">',
       '  <div class="post-meta">',
       '    <span>' + post.category + '</span>',
-      '    <time datetime="' + post.date + '">' + formatDate(post.date) + '</time>',
+      '    <time datetime="' + post.date + '">' + formatDate(post.date) + "</time>",
       "  </div>",
       '  <h3><a href="post.html?id=' + post.id + '">' + post.title + "</a></h3>",
       "  <p>" + post.summary + "</p>",

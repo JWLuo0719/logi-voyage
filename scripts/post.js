@@ -7,7 +7,7 @@
   }
 
   var params = new URLSearchParams(window.location.search);
-  var currentId = params.get("id") || posts[0] && posts[0].id;
+  var currentId = params.get("id") || (posts[0] && posts[0].id);
   var currentPost = posts.find(function (post) { return post.id === currentId; });
 
   if (!currentPost) {
@@ -27,7 +27,7 @@
     '<section class="post-hero">',
     '  <p class="eyebrow">' + currentPost.category + "</p>",
     '  <h1 class="post-title">' + currentPost.title + "</h1>",
-    '  <div class="post-meta"><time datetime="' + currentPost.date + '">' + window.formatDate(currentPost.date) + "</time><span>" + currentPost.readTime + "</span></div>",
+    '  <div class="post-meta"><time datetime="' + currentPost.date + '">' + window.formatDate(currentPost.date) + '</time><span>' + currentPost.readTime + "</span></div>",
     "  <p>" + currentPost.summary + "</p>",
     '  <img src="' + currentPost.cover + '" alt="' + currentPost.title + '">',
     "</section>",
@@ -51,7 +51,7 @@
     "</section>"
   ].join("");
 
-  document.title = currentPost.title + " | Neon Pulse";
+  document.title = currentPost.title + " | Logi Voyage";
 
   function createArticleBlocks(blocks) {
     return blocks.map(function (block) {
