@@ -67,21 +67,23 @@ body.home-page .hero-aside {
 
 body.home-page .home-profile-panel {
   display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
   gap: 16px;
+  align-items: center;
 }
 
 body.home-page .home-avatar-image {
-  width: 100%;
-  aspect-ratio: 1;
+  width: 88px;
+  height: 88px;
   object-fit: cover;
-  border-radius: 22px;
+  border-radius: 18px;
   border: 1px solid rgba(40, 55, 82, 0.08);
   background: rgba(255, 255, 255, 0.9);
 }
 
 body.home-page .home-profile-copy {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 body.home-page .social-card {
