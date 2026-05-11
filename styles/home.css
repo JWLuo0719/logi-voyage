@@ -1,162 +1,63 @@
-body.home-page {
-  color: #18212f;
-  background:
-    radial-gradient(circle at top left, rgba(53, 92, 255, 0.14), transparent 30%),
-    radial-gradient(circle at 85% 0, rgba(217, 119, 45, 0.12), transparent 24%),
-    linear-gradient(180deg, #fbf8f1 0%, #f5f1e8 48%, #ece4d7 100%);
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Segoe UI", sans-serif;
-}
-
-body.home-page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(24, 33, 47, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(24, 33, 47, 0.035) 1px, transparent 1px);
-  background-size: 100% 32px, 32px 100%;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 72%);
-}
-
-body.home-page .page-shell {
-  position: relative;
-  z-index: 1;
-  width: min(calc(100% - 32px), 1240px);
-}
-
-body.home-page .site-header,
-body.home-page .site-footer,
-body.home-page .hero-panel,
-body.home-page .section-grid {
-  background: rgba(255, 255, 255, 0.74);
-  border: 1px solid rgba(40, 55, 82, 0.08);
-  box-shadow: 0 18px 52px rgba(22, 31, 46, 0.08);
-  backdrop-filter: blur(18px);
-}
-
-body.home-page .site-header,
-body.home-page .site-footer,
-body.home-page .hero-panel,
-body.home-page .section-grid {
-  border-radius: 28px;
-}
-
-body.home-page .site-header {
-  top: 14px;
-}
-
-body.home-page .brand-mark {
-  width: 18px;
-  height: 36px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #355cff, #d9772d);
-  box-shadow: 0 10px 24px rgba(53, 92, 255, 0.24);
-}
-
-body.home-page .brand-text strong {
-  color: #18212f;
-}
-
-body.home-page .brand-text small,
-body.home-page p,
-body.home-page li,
-body.home-page .site-nav a {
-  color: #5e6878;
-}
-
-body.home-page .site-nav a:hover,
-body.home-page .site-nav a.is-active {
-  color: #18212f;
-  background: rgba(53, 92, 255, 0.08);
-}
-
-body.home-page .nav-toggle {
-  border-color: rgba(40, 55, 82, 0.1);
-  background: rgba(255, 255, 255, 0.8);
-}
-
-body.home-page .nav-toggle span {
-  background: #18212f;
-}
-
-body.home-page main {
+body.home-page .home-main {
   gap: 22px;
 }
 
-body.home-page .hero-panel {
-  grid-template-columns: minmax(0, 1.2fr) 360px;
-  gap: 24px;
-  align-items: stretch;
-  padding: 30px;
+body.home-page .home-hero {
+  grid-template-columns: minmax(0, 1.25fr) 360px;
+  gap: 26px;
+  align-items: start;
 }
 
-body.home-page .hero-copy {
-  gap: 16px;
+body.home-page .home-hero-copy {
+  gap: 18px;
 }
 
-body.home-page .eyebrow,
-body.home-page .feature-tag,
-body.home-page .post-category {
-  color: #355cff;
+body.home-page .hero-intro {
+  display: grid;
+  gap: 10px;
 }
 
-body.home-page h1,
-body.home-page h2,
-body.home-page h3 {
-  color: #18212f;
-  font-family: "Georgia", "Songti SC", "STSong", serif;
+body.home-page .hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--accent);
+  background: rgba(53, 92, 255, 0.08);
+  border: 1px solid rgba(53, 92, 255, 0.12);
+  font-size: 0.9rem;
 }
 
 body.home-page h1 {
-  max-width: 12ch;
-  letter-spacing: -0.02em;
+  max-width: 16ch;
+  font-size: clamp(1.95rem, 3.8vw, 3.1rem);
+  line-height: 1.12;
 }
 
 body.home-page .hero-summary {
-  max-width: 56ch;
-  font-size: 1rem;
+  max-width: 60ch;
 }
 
-body.home-page .button {
-  min-width: 128px;
-  border-radius: 999px;
+body.home-page .home-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
-body.home-page .button-primary {
-  color: #ffffff;
-  background: linear-gradient(90deg, #355cff, #5a7dff);
-  box-shadow: 0 14px 30px rgba(53, 92, 255, 0.22);
-}
-
-body.home-page .button-secondary {
-  color: #18212f;
-  border-color: rgba(40, 55, 82, 0.12);
-  background: rgba(255, 255, 255, 0.72);
-}
-
-body.home-page .hero-stats {
-  margin-top: 2px;
-}
-
-body.home-page .hero-stats li,
-body.home-page .profile-card,
-body.home-page .sidebar-card,
-body.home-page .feature-card,
-body.home-page .story-card,
-body.home-page .post-card {
+body.home-page .quick-card {
+  display: grid;
+  align-content: start;
+  min-height: 156px;
+  padding: 18px 18px 16px;
+  border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(40, 55, 82, 0.08);
-  box-shadow: 0 14px 32px rgba(22, 31, 46, 0.06);
+  box-shadow: 0 14px 32px rgba(22, 31, 46, 0.05);
 }
 
-body.home-page .hero-stats li strong {
-  color: #18212f;
-}
-
-body.home-page .hero-stats li span {
-  display: block;
-  color: #5e6878;
+body.home-page .quick-card h3 {
+  margin: 6px 0 8px;
 }
 
 body.home-page .hero-aside {
@@ -164,27 +65,18 @@ body.home-page .hero-aside {
   gap: 16px;
 }
 
-body.home-page .home-profile-card {
+body.home-page .home-profile-panel {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr);
-  gap: 18px;
-  align-items: center;
+  gap: 16px;
 }
 
-body.home-page .home-avatar {
-  display: grid;
-  place-items: center;
-  width: 84px;
+body.home-page .home-avatar-image {
+  width: 100%;
   aspect-ratio: 1;
-  border-radius: 26px;
-  color: #ffffff;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  background:
-    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.5), transparent 20%),
-    linear-gradient(135deg, #355cff, #d9772d);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  object-fit: cover;
+  border-radius: 22px;
+  border: 1px solid rgba(40, 55, 82, 0.08);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 body.home-page .home-profile-copy {
@@ -192,137 +84,278 @@ body.home-page .home-profile-copy {
   gap: 8px;
 }
 
-body.home-page .home-note-card {
+body.home-page .social-card {
+  display: grid;
+  gap: 14px;
+}
+
+body.home-page .social-card-head {
+  display: grid;
+  gap: 6px;
+}
+
+body.home-page .social-links {
   display: grid;
   gap: 12px;
 }
 
-body.home-page .home-note-card h3 {
-  font-size: 1.08rem;
-}
-
-body.home-page .compact-list {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 8px;
-}
-
-body.home-page .section-grid {
-  padding: 26px 28px;
-}
-
-body.home-page .section-heading {
-  margin-bottom: 16px;
-}
-
-body.home-page .section-heading-inline {
+body.home-page .social-link {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(40, 55, 82, 0.08);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  min-height: 72px;
 }
 
-body.home-page .feature-grid,
-body.home-page .story-layout {
+body.home-page .social-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(53, 92, 255, 0.18);
+}
+
+body.home-page .social-link strong,
+body.home-page .social-link span {
+  color: var(--text);
+}
+
+body.home-page .social-link span {
+  color: var(--muted);
+  text-align: right;
+}
+
+body.home-page .social-link-muted {
+  cursor: default;
+}
+
+body.home-page .social-link-muted:hover {
+  transform: none;
+  border-color: rgba(40, 55, 82, 0.08);
+}
+
+body.home-page .social-link--bilibili {
+  background:
+    linear-gradient(135deg, rgba(0, 174, 236, 0.14), rgba(255, 102, 153, 0.1)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 174, 236, 0.18);
+}
+
+body.home-page .social-link--bilibili strong {
+  color: #0f5f8f;
+}
+
+body.home-page .social-link--github {
+  background:
+    linear-gradient(135deg, rgba(36, 41, 46, 0.1), rgba(88, 96, 105, 0.06)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(36, 41, 46, 0.14);
+}
+
+body.home-page .social-link--github strong {
+  color: #1f252c;
+}
+
+body.home-page .social-link--douyin {
+  background:
+    linear-gradient(135deg, rgba(37, 244, 238, 0.16), rgba(254, 44, 85, 0.12)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(37, 244, 238, 0.18);
+}
+
+body.home-page .social-link--douyin strong {
+  color: #7a1830;
+}
+
+body.home-page .social-link--wechat {
+  background:
+    linear-gradient(135deg, rgba(7, 193, 96, 0.14), rgba(119, 226, 168, 0.08)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(7, 193, 96, 0.16);
+}
+
+body.home-page .social-link--wechat strong {
+  color: #177145;
+}
+
+body.home-page .home-overview-grid,
+body.home-page .latest-posts-section,
+body.home-page .narrative-section {
+  background: rgba(255, 255, 255, 0.74);
+}
+
+body.home-page .home-story-layout,
+body.home-page .home-feature-grid {
   gap: 16px;
 }
 
-body.home-page .feature-card,
-body.home-page .story-card,
-body.home-page .post-card {
-  position: relative;
-  overflow: hidden;
+.page-banner-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 300px;
+  gap: 24px;
+  align-items: start;
 }
 
-body.home-page .feature-card::before,
-body.home-page .story-card::before,
-body.home-page .post-card::before {
-  background: linear-gradient(90deg, #355cff, transparent 55%, #d9772d);
-  opacity: 0.5;
+.page-banner-copy {
+  display: grid;
+  gap: 12px;
 }
 
-body.home-page .feature-card {
+.page-banner-copy h1 {
+  max-width: 16ch;
+  font-size: clamp(1.8rem, 3.2vw, 2.65rem);
+  line-height: 1.15;
+}
+
+.page-banner-side {
+  display: grid;
+}
+
+.mini-info-card {
+  display: grid;
+  align-content: start;
   min-height: 100%;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(40, 55, 82, 0.08);
+  box-shadow: 0 14px 32px rgba(22, 31, 46, 0.05);
 }
 
-body.home-page .feature-card p,
-body.home-page .story-card p,
-body.home-page .post-card p {
-  color: #5e6878;
+.mini-info-card h3 {
+  margin: 8px 0 10px;
 }
 
-body.home-page .post-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.profile-hero-expanded {
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
 }
 
-body.home-page .post-card {
+.profile-avatar-image-wrap {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.profile-avatar-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 26px;
+}
+
+.profile-heading-block {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-heading-block h1 {
+  font-size: clamp(1.95rem, 3.5vw, 2.9rem);
+  line-height: 1.14;
+}
+
+.profile-social-section .account-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.account-card {
+  display: grid;
+  align-content: start;
   gap: 10px;
+  min-height: 220px;
+  padding: 22px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(40, 55, 82, 0.08);
+  box-shadow: 0 14px 32px rgba(22, 31, 46, 0.05);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-body.home-page .post-meta {
-  align-items: center;
+.account-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(53, 92, 255, 0.18);
 }
 
-body.home-page .post-meta span {
-  color: #d9772d;
+.account-card-muted:hover {
+  transform: none;
+  border-color: rgba(40, 55, 82, 0.08);
 }
 
-body.home-page .text-link {
-  color: #355cff;
+.account-card--bilibili {
+  background:
+    linear-gradient(135deg, rgba(0, 174, 236, 0.16), rgba(255, 102, 153, 0.1)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 174, 236, 0.18);
 }
 
-body.home-page .text-link:hover,
-body.home-page .footer-links a:hover {
-  color: #18212f;
+.account-card--bilibili .feature-tag,
+.account-card--bilibili h3 {
+  color: #0f5f8f;
 }
 
-body.home-page .site-footer {
-  align-items: center;
+.account-card--github {
+  background:
+    linear-gradient(135deg, rgba(36, 41, 46, 0.12), rgba(88, 96, 105, 0.07)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(36, 41, 46, 0.14);
 }
 
-body.home-page .site-footer strong,
-body.home-page .footer-links a {
-  color: #18212f;
+.account-card--github .feature-tag,
+.account-card--github h3 {
+  color: #1f252c;
 }
 
-body.home-page .footer-links {
-  gap: 14px;
+.account-card--douyin {
+  background:
+    linear-gradient(135deg, rgba(37, 244, 238, 0.18), rgba(254, 44, 85, 0.12)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(37, 244, 238, 0.18);
 }
 
-@media (max-width: 960px) {
-  body.home-page .hero-panel,
-  body.home-page .post-grid,
-  body.home-page .feature-grid,
-  body.home-page .story-layout {
+.account-card--douyin .feature-tag,
+.account-card--douyin h3 {
+  color: #7a1830;
+}
+
+.account-card--wechat {
+  background:
+    linear-gradient(135deg, rgba(7, 193, 96, 0.14), rgba(119, 226, 168, 0.08)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(7, 193, 96, 0.16);
+}
+
+.account-card--wechat .feature-tag,
+.account-card--wechat h3 {
+  color: #177145;
+}
+
+.account-card p {
+  line-height: 1.72;
+}
+
+@media (max-width: 1100px) {
+  body.home-page .home-hero,
+  .page-banner-split,
+  .profile-hero-expanded,
+  .profile-social-section .account-grid {
     grid-template-columns: 1fr;
-  }
-
-  body.home-page .hero-panel {
-    padding: 24px;
   }
 }
 
 @media (max-width: 760px) {
-  body.home-page .page-shell {
-    width: min(calc(100% - 20px), 1240px);
-  }
-
-  body.home-page .site-header,
-  body.home-page .site-footer,
-  body.home-page .hero-panel,
-  body.home-page .section-grid {
-    border-radius: 24px;
-  }
-
-  body.home-page .hero-panel,
-  body.home-page .section-grid {
-    padding: 20px;
-  }
-
-  body.home-page .home-profile-card {
-    grid-template-columns: 1fr;
-  }
-
-  body.home-page h1 {
+  body.home-page h1,
+  .page-banner-copy h1,
+  .profile-heading-block h1 {
     max-width: none;
-    font-size: clamp(2rem, 10vw, 3.25rem);
+    font-size: clamp(1.9rem, 8vw, 2.8rem);
+  }
+
+  body.home-page .home-quick-grid,
+  .profile-social-section .account-grid {
+    grid-template-columns: 1fr;
   }
 }

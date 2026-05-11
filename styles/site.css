@@ -221,14 +221,14 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(2.4rem, 5vw, 4.8rem);
-  line-height: 1.02;
+  font-size: clamp(2.1rem, 4.4vw, 4rem);
+  line-height: 1.08;
   letter-spacing: -0.02em;
 }
 
 h2 {
-  font-size: clamp(1.6rem, 3vw, 2.5rem);
-  line-height: 1.1;
+  font-size: clamp(1.45rem, 2.8vw, 2.2rem);
+  line-height: 1.16;
 }
 
 h3 {
@@ -379,7 +379,7 @@ li {
   align-items: end;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .feature-grid,
@@ -398,8 +398,12 @@ li {
 .story-card,
 .post-card,
 .profile-card,
-.sidebar-card {
-  padding: 22px;
+.sidebar-card,
+.quick-card,
+.account-card,
+.mini-info-card,
+.social-link {
+  padding: 20px;
   border-radius: var(--radius-md);
 }
 
@@ -413,7 +417,8 @@ li {
 .feature-card::before,
 .story-card::before,
 .post-card::before,
-.profile-card::before {
+.profile-card::before,
+.account-card::before {
   content: "";
   position: absolute;
   inset: 0 auto auto 0;
@@ -434,11 +439,17 @@ li {
 
 .post-card {
   display: grid;
-  gap: 12px;
+  align-content: start;
+  gap: 10px;
+  min-height: 100%;
 }
 
 .post-card p {
   font-size: 0.96rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .post-meta {
@@ -446,6 +457,10 @@ li {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.post-card h3 {
+  line-height: 1.38;
 }
 
 .post-meta time {
@@ -480,7 +495,7 @@ li {
 }
 
 .page-banner h1 {
-  max-width: 14ch;
+  max-width: 16ch;
   margin: 10px 0 16px;
 }
 
@@ -545,6 +560,70 @@ li {
   gap: 22px;
 }
 
+.post-hero-refined {
+  display: grid;
+  gap: 18px;
+}
+
+.post-hero-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.post-hero-copy {
+  display: grid;
+  gap: 14px;
+}
+
+.post-hero-copy .post-title {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(2rem, 3.8vw, 3.25rem);
+  line-height: 1.14;
+}
+
+.post-lead {
+  max-width: 60ch;
+  font-size: 1.02rem;
+}
+
+.post-meta-refined {
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(53, 92, 255, 0.06);
+  border: 1px solid rgba(53, 92, 255, 0.1);
+}
+
+.post-hero-cover-wrap {
+  padding: 12px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(40, 55, 82, 0.08);
+}
+
+.post-hero-cover-wrap img {
+  margin-top: 0;
+  height: 100%;
+  min-height: 280px;
+  border-radius: 16px;
+}
+
+.post-hero-notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.post-hero-notes .mini-info-card h3,
+.sidebar-card h3,
+.quick-card h3,
+.account-card h3 {
+  line-height: 1.36;
+}
+
 .post-hero img {
   width: 100%;
   height: 360px;
@@ -559,30 +638,56 @@ li {
 
 .post-article {
   display: grid;
-  gap: 18px;
+  gap: 20px;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .article-block {
   display: grid;
-  gap: 8px;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(40, 55, 82, 0.08);
 }
 
 .article-block h2 {
-  font-size: 1.24rem;
+  font-size: 1.36rem;
+  line-height: 1.3;
+}
+
+.article-block:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .article-list {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 22px;
 }
 
 .article-list li + li {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .sidebar-stack {
   display: grid;
   gap: 18px;
+}
+
+.post-sidebar-refined {
+  align-content: start;
+}
+
+.sidebar-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.sidebar-card-emphasis {
+  background: rgba(247, 249, 255, 0.9);
+  border-color: rgba(53, 92, 255, 0.12);
 }
 
 .recommend-list,
@@ -639,6 +744,11 @@ li {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.compact-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
 .timeline {
   display: grid;
   gap: 14px;
@@ -648,7 +758,7 @@ li {
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr);
   gap: 18px;
-  padding: 20px 22px;
+  padding: 18px 20px;
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(40, 55, 82, 0.08);
@@ -690,6 +800,11 @@ li {
 
   .post-hero img {
     height: 260px;
+  }
+
+  .post-hero-main,
+  .post-hero-notes {
+    grid-template-columns: 1fr;
   }
 
   .site-footer {
@@ -742,6 +857,11 @@ li {
 
   h1 {
     font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .post-hero-copy .post-title {
+    max-width: none;
+    font-size: clamp(1.9rem, 8vw, 2.7rem);
   }
 
   .hero-overlay-card {

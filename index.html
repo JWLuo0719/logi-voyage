@@ -35,48 +35,98 @@
 
     <main class="home-main">
       <section class="hero-panel home-hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Personal Blog</p>
-          <h1>把前端练习、课程作业和项目记录放在一个更清爽的首页里。</h1>
+        <div class="hero-copy home-hero-copy">
+          <p class="eyebrow">Personal Homepage</p>
+          <div class="hero-intro">
+            <span class="hero-kicker">学游纪 / Logi Voyage</span>
+            <h1>把前端练习、课程作业、内容记录和个人表达放进同一个站点。</h1>
+          </div>
           <p class="hero-summary">
-            这个站点用于整理我在前端开发、页面结构、设计观察和课程项目中的持续练习。
-            首页不再强调概念视觉，而是把文章入口、个人方向和内容层级放在更前面。
+            这里是我的个人主页型博客。它一方面整理前端学习与页面练习，另一方面也作为作品入口、
+            账号导航和内容归档页，方便持续更新和长期维护。
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="posts.html">查看文章</a>
-            <a class="button button-secondary" href="profile.html">认识我</a>
+            <a class="button button-secondary" href="profile.html">查看关于页</a>
           </div>
-          <ul class="hero-stats">
-            <li><strong>12</strong><span>篇文章记录</span></li>
-            <li><strong>4</strong><span>个核心页面</span></li>
-            <li><strong>长期</strong><span>持续更新中</span></li>
-          </ul>
+          <div class="home-quick-grid">
+            <article class="quick-card">
+              <span class="post-category">Focus</span>
+              <h3>前端页面与内容结构</h3>
+              <p>更关注页面如何组织信息，以及一个站点能不能长期稳定地生长。</p>
+            </article>
+            <article class="quick-card">
+              <span class="post-category">Update</span>
+              <h3>正在打磨个人博客</h3>
+              <p>继续补充文章、项目和展示内容，把课程作业做成可持续使用的个人主页。</p>
+            </article>
+          </div>
         </div>
 
         <aside class="hero-aside">
-          <article class="profile-card home-profile-card">
-            <div class="home-avatar" aria-hidden="true">LV</div>
+          <article class="profile-card home-profile-panel">
+            <img class="home-avatar-image" src="assets/学游纪.png" alt="学游纪个人头像">
             <div class="home-profile-copy">
-              <p class="eyebrow">Current Focus</p>
-              <h3>前端界面、内容结构、项目整理</h3>
-              <p>更关注页面如何组织信息，以及内容能不能被稳定地阅读和回看。</p>
+              <p class="eyebrow">Identity</p>
+              <h3>学游纪</h3>
+              <p>前端学习者，正在把课程项目、页面练习与个人表达统一进一个更完整的博客系统。</p>
             </div>
           </article>
 
-          <article class="sidebar-card home-note-card">
-            <span class="post-category">Now</span>
-            <h3>首页基调调整</h3>
-            <p>减少强风格视觉，换成更明确的内容入口、更大的留白和更稳定的版面节奏。</p>
-            <ul class="plain-list compact-list">
-              <li>文章优先</li>
-              <li>项目并列展示</li>
-              <li>保留个人表达</li>
-            </ul>
+          <article class="sidebar-card social-card">
+            <div class="social-card-head">
+              <span class="post-category">Accounts</span>
+              <h3>个人账号</h3>
+            </div>
+            <div class="social-links">
+              <a class="social-link social-link--bilibili" href="https://space.bilibili.com/1351101130" target="_blank" rel="noreferrer">
+                <strong>B站</strong>
+                <span>@ 学游纪</span>
+              </a>
+              <a class="social-link social-link--github" href="https://github.com/JWLuo0719" target="_blank" rel="noreferrer">
+                <strong>GitHub</strong>
+                <span>@ JWLuo0719</span>
+              </a>
+              <a class="social-link social-link--douyin" href="https://v.douyin.com/X8Hhjg7VMpU/" target="_blank" rel="noreferrer">
+                <strong>抖音</strong>
+                <span>内容入口</span>
+              </a>
+              <div class="social-link social-link-muted social-link--wechat">
+                <strong>公众号</strong>
+                <span>占位</span>
+              </div>
+            </div>
           </article>
         </aside>
       </section>
 
-      <section class="section-grid">
+      <section class="section-grid home-overview-grid">
+        <div class="section-heading section-heading-inline">
+          <div>
+            <p class="eyebrow">Overview</p>
+            <h2>这个站点现在承担什么角色</h2>
+          </div>
+        </div>
+        <div class="feature-grid home-feature-grid">
+          <article class="feature-card">
+            <span class="feature-tag">博客</span>
+            <h3>记录学习过程</h3>
+            <p>围绕 HTML、CSS、JavaScript 和页面结构整理学习笔记，逐步形成自己的知识归档。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-tag">作品入口</span>
+            <h3>承接课程项目</h3>
+            <p>把课程作业、小型练习和页面实验收纳进同一套站点结构，方便展示与后续扩展。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-tag">主页</span>
+            <h3>连接个人账号</h3>
+            <p>让博客不仅是文章列表，还能作为个人主页、导航页和后续内容运营的统一入口。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-grid latest-posts-section">
         <div class="section-heading section-heading-inline">
           <div>
             <p class="eyebrow">Latest Posts</p>
@@ -87,51 +137,25 @@
         <div id="featured-posts" class="post-grid"></div>
       </section>
 
-      <section class="section-grid">
+      <section class="section-grid narrative-section">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Blog Structure</p>
-            <h2>这个博客现在怎么组织内容</h2>
-          </div>
-        </div>
-        <div class="feature-grid home-feature-grid">
-          <article class="feature-card">
-            <span class="feature-tag">文章</span>
-            <h3>记录过程</h3>
-            <p>围绕 HTML、CSS、JavaScript 和页面结构整理学习笔记，尽量写成可复用的经验。</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-tag">项目</span>
-            <h3>展示作品</h3>
-            <p>把课程作业、小型练习和个人页面统一收纳，形成完整的作品入口。</p>
-          </article>
-          <article class="feature-card">
-            <span class="feature-tag">关于</span>
-            <h3>保留个人表达</h3>
-            <p>在内容之外保留一个更安静的空间，用来放学习方向、节奏和审美偏好。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section-grid story-panel">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Why This Shape</p>
-            <h2>为什么首页要从“海报感”改成“目录感”</h2>
+            <p class="eyebrow">Why This Design</p>
+            <h2>为什么我把首页做成“个人主页 + 博客入口”的组合</h2>
           </div>
         </div>
         <div class="story-layout home-story-layout">
           <article class="story-card">
-            <h3>更容易读</h3>
-            <p>首页先承担引导作用，让访客先看到我写什么、做什么，再决定往哪里继续看。</p>
+            <h3>减少空洞的大标题</h3>
+            <p>首屏不再只靠一句大字填满，而是同时放简介、头像、账号入口和当前关注点，让信息更完整。</p>
           </article>
           <article class="story-card">
-            <h3>更容易扩展</h3>
-            <p>后续不管增加文章、项目还是归档页，都能沿着同一套信息结构继续生长。</p>
+            <h3>提高内容密度</h3>
+            <p>首页直接承接文章、账号、作品方向和博客定位，访客不需要先猜这个站点是做什么的。</p>
           </article>
           <article class="story-card">
-            <h3>更像个人主页</h3>
-            <p>它不只是课程作业首页，也应该是一个长期可维护、能体现个人方向的起点。</p>
+            <h3>便于后续扩展</h3>
+            <p>后续无论增加文章、项目页还是单独的作品展示，都可以在这套结构上继续扩展，不会再推翻重来。</p>
           </article>
         </div>
       </section>
@@ -143,7 +167,9 @@
         <p>记录前端练习、项目过程与持续写作的个人主页型博客。</p>
       </div>
       <div class="footer-links">
-        <a href="mailto:student@example.com">student@example.com</a>
+        <a href="https://space.bilibili.com/1351101130" target="_blank" rel="noreferrer">B站</a>
+        <a href="https://github.com/JWLuo0719" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://v.douyin.com/X8Hhjg7VMpU/" target="_blank" rel="noreferrer">抖音</a>
         <a href="profile.html">个人资料</a>
       </div>
     </footer>

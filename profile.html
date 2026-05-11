@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>关于我 | Logi Voyage</title>
-  <meta name="description" content="查看个人博客作者的简介、技能与学习规划。">
+  <meta name="description" content="查看个人博客作者的简介、技能、账号入口与学习规划。">
   <link rel="stylesheet" href="styles/site.css">
   <link rel="stylesheet" href="styles/home.css">
 </head>
@@ -31,20 +31,54 @@
     </header>
 
     <main>
-      <section class="profile-hero">
-        <div class="profile-avatar" aria-hidden="true">
-          <span></span>
+      <section class="profile-hero profile-hero-expanded">
+        <div class="profile-avatar profile-avatar-image-wrap">
+          <img class="profile-avatar-image" src="assets/学游纪.png" alt="学游纪个人头像">
         </div>
         <div class="profile-copy">
           <p class="eyebrow">About The Author</p>
-          <h1>你好，我正在用项目和页面练习表达自己的前端学习者。</h1>
-          <p>
-            这个个人博客既是课程作业，也是我整理知识、展示作品和记录成长的长期空间。
-          </p>
+          <div class="profile-heading-block">
+            <h1>学游纪，正在把前端练习和个人表达整理成一个长期维护的站点。</h1>
+            <p>
+              我希望这个博客不仅能完成课程作业，也能作为自己的内容起点，逐渐承接文章、项目和账号展示。
+            </p>
+          </div>
           <div class="profile-badges">
             <span>HTML / CSS / JavaScript</span>
             <span>界面设计</span>
             <span>课程项目实践</span>
+            <span>内容归档</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-grid profile-social-section">
+        <div class="section-heading section-heading-inline">
+          <div>
+            <p class="eyebrow">Accounts</p>
+            <h2>个人账号与内容入口</h2>
+          </div>
+        </div>
+        <div class="account-grid">
+          <a class="account-card account-card--bilibili" href="https://space.bilibili.com/1351101130" target="_blank" rel="noreferrer">
+            <span class="feature-tag">B站</span>
+            <h3>视频与动态内容</h3>
+            <p>后续可以承接剪辑、学习记录和项目展示内容。</p>
+          </a>
+          <a class="account-card account-card--github" href="https://github.com/JWLuo0719" target="_blank" rel="noreferrer">
+            <span class="feature-tag">GitHub</span>
+            <h3>代码与项目仓库</h3>
+            <p>用于托管前端练习、课程作业和逐步积累的个人项目。</p>
+          </a>
+          <a class="account-card account-card--douyin" href="https://v.douyin.com/X8Hhjg7VMpU/" target="_blank" rel="noreferrer">
+            <span class="feature-tag">抖音</span>
+            <h3>短内容入口</h3>
+            <p>可以补充更轻量的表达方式，作为博客之外的内容触点。</p>
+          </a>
+          <div class="account-card account-card-muted account-card--wechat">
+            <span class="feature-tag">公众号</span>
+            <h3>后续预留</h3>
+            <p>当前位置保留，后续如果有文字专题输出，可以接入公众号入口。</p>
           </div>
         </div>
       </section>
@@ -52,7 +86,7 @@
       <section class="section-grid profile-grid">
         <article class="profile-card">
           <h2>我的方向</h2>
-          <p>关注前端页面实现、交互体验和视觉表达，希望把代码写得稳定，也把页面做得更有记忆点。</p>
+          <p>关注前端页面实现、交互体验和视觉表达，希望把代码写得稳定，也把页面做得更有辨识度。</p>
         </article>
         <article class="profile-card">
           <h2>常用工具</h2>
@@ -65,7 +99,7 @@
         </article>
         <article class="profile-card">
           <h2>近期目标</h2>
-          <p>完成高质量课程作业，打磨个人博客，并逐步补充更真实的项目案例和学习文章。</p>
+          <p>继续补文章、优化展示页、完成更稳定的视觉系统，并逐步积累更真实的前端项目案例。</p>
         </article>
       </section>
 
@@ -79,21 +113,21 @@
             <span>01</span>
             <div>
               <h3>基础搭建</h3>
-              <p>系统学习 HTML 结构语义化、CSS 布局和 JavaScript 基础语法。</p>
+              <p>系统学习 HTML 结构语义化、CSS 布局和 JavaScript 基础语法，先保证页面可以稳定完成。</p>
             </div>
           </article>
           <article class="timeline-item">
             <span>02</span>
             <div>
               <h3>页面临摹与改造</h3>
-              <p>通过拆解优秀页面练习视觉还原与响应式适配。</p>
+              <p>通过拆解优秀页面练习视觉还原与响应式适配，并开始建立自己的审美判断。</p>
             </div>
           </article>
           <article class="timeline-item">
             <span>03</span>
             <div>
               <h3>项目整合</h3>
-              <p>把单页练习汇总成完整网站，形成清晰的作品结构和内容组织。</p>
+              <p>把单页练习汇总成完整网站，形成更清晰的作品结构、账号入口和内容组织。</p>
             </div>
           </article>
         </div>
@@ -103,10 +137,11 @@
     <footer class="site-footer">
       <div>
         <strong>Logi Voyage</strong>
-        <p>一个可以持续生长的个人博客样板。</p>
+        <p>一个可以持续生长的个人主页型博客。</p>
       </div>
       <div class="footer-links">
         <a href="posts.html">查看文章</a>
+        <a href="https://github.com/JWLuo0719" target="_blank" rel="noreferrer">GitHub</a>
         <a href="mailto:student@example.com">student@example.com</a>
       </div>
     </footer>
