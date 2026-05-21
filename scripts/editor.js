@@ -12,20 +12,144 @@
 
   if (!blocksContainer) return;
 
-  // 默认日期为今天
-  var dateInput = document.getElementById("editor-date");
-  if (dateInput) {
-    var today = new Date();
-    var yyyy = today.getFullYear();
-    var mm = String(today.getMonth() + 1).padStart(2, "0");
-    var dd = String(today.getDate()).padStart(2, "0");
-    dateInput.value = yyyy + "-" + mm + "-" + dd;
+  var DRAFT_KEY = "editor-draft";
+  var dirty = false;
+  var saveTimer = null;
+
+  // ── 离开页面保护 ──
+  window.addEventListener("beforeunload", function (e) {
+    if (!dirty) return;
+    e.preventDefault();
+    e.returnValue = "";
+  });
+
+  // ── 恢复草稿 ──
+  var savedDraft = null;
+  try {
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if (raw) savedDraft = JSON.parse(raw);
+  } catch (err) {}
+
+  if (savedDraft && savedDraft._meta) {
+    var meta = savedDraft._meta;
+    var msg = "检测到未发布的草稿（" + meta.title + "，保存于 " + meta.savedAt + "），是否恢复？";
+    if (confirm(msg)) {
+      restoreDraft(savedDraft);
+    } else {
+      localStorage.removeItem(DRAFT_KEY);
+      initEmpty();
+    }
+  } else {
+    initEmpty();
   }
 
-  // 初始化一个空内容块
-  addBlock();
+  // ── 监听所有输入变化，标记 dirty 并自动保存 ──
+  document.querySelector("main").addEventListener("input", function () {
+    dirty = true;
+    scheduleAutoSave();
+  });
 
-  btnAddBlock.addEventListener("click", addBlock);
+  document.querySelector("main").addEventListener("change", function () {
+    dirty = true;
+    scheduleAutoSave();
+  });
+
+  function scheduleAutoSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(autoSave, 2000);
+  }
+
+  function autoSave() {
+    var data = collectDataRaw();
+    if (!data) return;
+    var now = new Date();
+    data._meta = {
+      title: data.title || "（无标题）",
+      savedAt: now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, "0") + "-" +
+        String(now.getDate()).padStart(2, "0") + " " +
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0")
+    };
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+    } catch (err) {}
+  }
+
+  // ── 初始化空表单 ──
+  function initEmpty() {
+    var dateInput = document.getElementById("editor-date");
+    if (dateInput) {
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      var mm = String(today.getMonth() + 1).padStart(2, "0");
+      var dd = String(today.getDate()).padStart(2, "0");
+      dateInput.value = yyyy + "-" + mm + "-" + dd;
+    }
+    addBlock();
+    dirty = false;
+  }
+
+  // ── 恢复草稿到表单 ──
+  function restoreDraft(draft) {
+    document.getElementById("editor-id").value = draft.id || "";
+    document.getElementById("editor-title").value = draft.title || "";
+    document.getElementById("editor-category").value = draft.category || "";
+    document.getElementById("editor-date").value = draft.date || "";
+    document.getElementById("editor-readtime").value = draft.readTime || "";
+    document.getElementById("editor-summary").value = draft.summary || "";
+    document.getElementById("editor-cover").value = draft.cover || "";
+
+    blocksContainer.innerHTML = "";
+    if (draft.content && draft.content.length > 0) {
+      for (var i = 0; i < draft.content.length; i++) {
+        restoreBlock(draft.content[i]);
+      }
+    } else {
+      addBlock();
+    }
+    dirty = false;
+  }
+
+  function restoreBlock(blockData) {
+    var type = "paragraphs";
+    if (blockData.image) type = "image";
+    else if (blockData.list) type = "list";
+
+    addBlock();
+    var lastBlock = blocksContainer.lastElementChild;
+
+    // 设置标题
+    var headingInput = lastBlock.querySelector(".block-heading");
+    if (headingInput) headingInput.value = blockData.heading || "";
+
+    // 设置类型
+    var radio = lastBlock.querySelector('input[type="radio"][value="' + type + '"]');
+    if (radio) {
+      radio.checked = true;
+      switchBlockType(lastBlock);
+    }
+
+    // 填充内容
+    if (type === "paragraphs" && blockData.paragraphs) {
+      var ta = lastBlock.querySelector(".block-paragraphs");
+      if (ta) ta.value = blockData.paragraphs.join("\n");
+    } else if (type === "list" && blockData.list) {
+      var ta2 = lastBlock.querySelector(".block-list");
+      if (ta2) ta2.value = blockData.list.join("\n");
+    } else if (type === "image" && blockData.image) {
+      var srcInput = lastBlock.querySelector(".block-image-src");
+      var altInput = lastBlock.querySelector(".block-image-alt");
+      if (srcInput) srcInput.value = blockData.image.src || "";
+      if (altInput) altInput.value = blockData.image.alt || "";
+    }
+  }
+
+  btnAddBlock.addEventListener("click", function () {
+    addBlock();
+    dirty = true;
+    scheduleAutoSave();
+  });
   btnGenerate.addEventListener("click", generateJSON);
   btnPreview.addEventListener("click", previewArticle);
   btnClear.addEventListener("click", clearForm);
@@ -57,18 +181,20 @@
       '</div>'
     ].join("");
 
-    // 切换段落/列表/图片
     var radios = block.querySelectorAll('input[type="radio"]');
     for (var i = 0; i < radios.length; i++) {
       radios[i].addEventListener("change", function () {
         switchBlockType(block);
+        dirty = true;
+        scheduleAutoSave();
       });
     }
 
-    // 删除按钮
     block.querySelector(".editor-block-remove").addEventListener("click", function () {
       block.parentNode.removeChild(block);
       renumberBlocks();
+      dirty = true;
+      scheduleAutoSave();
     });
 
     blocksContainer.appendChild(block);
@@ -110,25 +236,21 @@
         '<div class="editor-image-preview"></div>'
       ].join("");
 
-      // 文件选择后自动填充路径和预览
       var fileInput = body.querySelector(".block-image-file");
       var srcInput = body.querySelector(".block-image-src");
-      var altInput = body.querySelector(".block-image-alt");
       var previewDiv = body.querySelector(".editor-image-preview");
 
       fileInput.addEventListener("change", function () {
         var file = fileInput.files[0];
         if (!file) return;
-
-        // 自动生成 assets/ 路径
         srcInput.value = "assets/" + file.name;
-
-        // 预览
         var reader = new FileReader();
         reader.onload = function (e) {
           previewDiv.innerHTML = '<img src="' + e.target.result + '" alt="预览">';
         };
         reader.readAsDataURL(file);
+        dirty = true;
+        scheduleAutoSave();
       });
     }
   }
@@ -141,20 +263,8 @@
     }
   }
 
-  function collectData() {
-    var id = document.getElementById("editor-id").value.trim();
-    var title = document.getElementById("editor-title").value.trim();
-    var category = document.getElementById("editor-category").value.trim();
-    var date = document.getElementById("editor-date").value;
-    var readTime = document.getElementById("editor-readtime").value.trim();
-    var summary = document.getElementById("editor-summary").value.trim();
-    var cover = document.getElementById("editor-cover").value.trim();
-
-    if (!id || !title) {
-      alert("请至少填写文章 ID 和标题。");
-      return null;
-    }
-
+  // 不带校验的原始数据收集（用于自动保存）
+  function collectDataRaw() {
     var content = [];
     var blocks = blocksContainer.querySelectorAll(".editor-block");
     for (var i = 0; i < blocks.length; i++) {
@@ -167,14 +277,10 @@
 
       if (type === "paragraphs") {
         var paraText = blocks[i].querySelector(".block-paragraphs").value;
-        var paragraphs = paraText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
-        if (paragraphs.length === 0 && !heading) continue;
-        block.paragraphs = paragraphs;
+        block.paragraphs = paraText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
       } else if (type === "list") {
         var listText = blocks[i].querySelector(".block-list").value;
-        var list = listText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
-        if (list.length === 0 && !heading) continue;
-        block.list = list;
+        block.list = listText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
       } else {
         var srcInput = blocks[i].querySelector(".block-image-src");
         var altInput = blocks[i].querySelector(".block-image-alt");
@@ -190,15 +296,26 @@
     }
 
     return {
-      id: id,
-      title: title,
-      category: category || "未分类",
-      date: date || "2026-01-01",
-      readTime: readTime || "3 min",
-      summary: summary || "",
-      cover: cover || "assets/hero-gpt-image2.png",
+      id: document.getElementById("editor-id").value.trim(),
+      title: document.getElementById("editor-title").value.trim(),
+      category: document.getElementById("editor-category").value.trim(),
+      date: document.getElementById("editor-date").value,
+      readTime: document.getElementById("editor-readtime").value.trim(),
+      summary: document.getElementById("editor-summary").value.trim(),
+      cover: document.getElementById("editor-cover").value.trim(),
       content: content
     };
+  }
+
+  // 带校验的数据收集（用于生成 JSON / 预览）
+  function collectData() {
+    var id = document.getElementById("editor-id").value.trim();
+    var title = document.getElementById("editor-title").value.trim();
+    if (!id || !title) {
+      alert("请至少填写文章 ID 和标题。");
+      return null;
+    }
+    return collectDataRaw();
   }
 
   function generateJSON() {
@@ -220,6 +337,7 @@
       navigator.clipboard.writeText(text).then(function () {
         btnCopy.textContent = "已复制!";
         setTimeout(function () { btnCopy.textContent = "复制到剪贴板"; }, 2000);
+        onCopySuccess();
       });
     } else {
       var ta = document.createElement("textarea");
@@ -230,7 +348,14 @@
       document.body.removeChild(ta);
       btnCopy.textContent = "已复制!";
       setTimeout(function () { btnCopy.textContent = "复制到剪贴板"; }, 2000);
+      onCopySuccess();
     }
+  }
+
+  function onCopySuccess() {
+    // 复制成功后清除草稿和 dirty 标记
+    dirty = false;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (err) {}
   }
 
   function previewArticle() {
@@ -304,6 +429,7 @@
   }
 
   function clearForm() {
+    if (dirty && !confirm("当前有未保存的内容，确定要清空吗？")) return;
     document.getElementById("editor-id").value = "";
     document.getElementById("editor-title").value = "";
     document.getElementById("editor-category").value = "";
@@ -314,5 +440,7 @@
     addBlock();
     outputSection.style.display = "none";
     previewSection.style.display = "none";
+    dirty = false;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (err) {}
   }
 })();
