@@ -186,9 +186,10 @@
     var radios = block.querySelectorAll('input[type="radio"]');
     for (var i = 0; i < radios.length; i++) {
       radios[i].addEventListener("change", function () {
-        switchBlockType(block);
-        dirty = true;
-        scheduleAutoSave();
+        if (switchBlockType(block)) {
+          dirty = true;
+          scheduleAutoSave();
+        }
       });
     }
 
@@ -202,10 +203,34 @@
     blocksContainer.appendChild(block);
   }
 
+  function hasBlockContent(body) {
+    var ta = body.querySelector("textarea");
+    if (ta && ta.value.trim()) return true;
+    var srcInput = body.querySelector(".block-image-src");
+    if (srcInput && srcInput.value.trim()) return true;
+    return false;
+  }
+
   function switchBlockType(block) {
     var radio = block.querySelector('input[type="radio"]:checked');
     var body = block.querySelector(".editor-block-body");
     var type = radio ? radio.value : "paragraphs";
+
+    // 检查当前内容是否有内容，有则提示
+    if (hasBlockContent(body) && !confirm("切换类型会丢失当前块的内容，确定切换吗？")) {
+      // 恢复到之前的类型
+      var allRadios = block.querySelectorAll('input[type="radio"]');
+      for (var j = 0; j < allRadios.length; j++) {
+        if (allRadios[j] !== radio) allRadios[j].checked = false;
+      }
+      // 取消当前选中，恢复之前的
+      var prevType = body.querySelector(".block-paragraphs") ? "paragraphs"
+        : body.querySelector(".block-list") ? "list" : "image";
+      radio.checked = false;
+      var prevRadio = block.querySelector('input[type="radio"][value="' + prevType + '"]');
+      if (prevRadio) prevRadio.checked = true;
+      return false;
+    }
 
     if (type === "paragraphs") {
       body.innerHTML = [
@@ -255,6 +280,7 @@
         scheduleAutoSave();
       });
     }
+    return true;
   }
 
   function renumberBlocks() {
