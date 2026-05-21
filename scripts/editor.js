@@ -17,10 +17,26 @@
   var saveTimer = null;
 
   // ── 离开页面保护 ──
+  // 使用 document 级别 + capture 阶段监听，确保一定能捕获到
+  document.addEventListener("input", function (e) {
+    if (e.target.closest("#blocks-container") || e.target.closest(".editor-form-grid")) {
+      dirty = true;
+      scheduleAutoSave();
+    }
+  }, true);
+
+  document.addEventListener("change", function (e) {
+    if (e.target.closest("#blocks-container") || e.target.closest(".editor-form-grid")) {
+      dirty = true;
+      scheduleAutoSave();
+    }
+  }, true);
+
   window.addEventListener("beforeunload", function (e) {
     if (!dirty) return;
     e.preventDefault();
-    e.returnValue = "";
+    e.returnValue = "您有未保存的编辑内容，确定要离开吗？";
+    return e.returnValue;
   });
 
   // ── 恢复草稿 ──
@@ -42,17 +58,6 @@
   } else {
     initEmpty();
   }
-
-  // ── 监听所有输入变化，标记 dirty 并自动保存 ──
-  document.querySelector("main").addEventListener("input", function () {
-    dirty = true;
-    scheduleAutoSave();
-  });
-
-  document.querySelector("main").addEventListener("change", function () {
-    dirty = true;
-    scheduleAutoSave();
-  });
 
   function scheduleAutoSave() {
     if (saveTimer) clearTimeout(saveTimer);
@@ -119,18 +124,15 @@
     addBlock();
     var lastBlock = blocksContainer.lastElementChild;
 
-    // 设置标题
     var headingInput = lastBlock.querySelector(".block-heading");
     if (headingInput) headingInput.value = blockData.heading || "";
 
-    // 设置类型
     var radio = lastBlock.querySelector('input[type="radio"][value="' + type + '"]');
     if (radio) {
       radio.checked = true;
       switchBlockType(lastBlock);
     }
 
-    // 填充内容
     if (type === "paragraphs" && blockData.paragraphs) {
       var ta = lastBlock.querySelector(".block-paragraphs");
       if (ta) ta.value = blockData.paragraphs.join("\n");
@@ -307,7 +309,6 @@
     };
   }
 
-  // 带校验的数据收集（用于生成 JSON / 预览）
   function collectData() {
     var id = document.getElementById("editor-id").value.trim();
     var title = document.getElementById("editor-title").value.trim();
@@ -353,7 +354,6 @@
   }
 
   function onCopySuccess() {
-    // 复制成功后清除草稿和 dirty 标记
     dirty = false;
     try { localStorage.removeItem(DRAFT_KEY); } catch (err) {}
   }
