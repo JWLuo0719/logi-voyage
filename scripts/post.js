@@ -84,9 +84,13 @@
   document.title = currentPost.title + " | Logi Voyage";
 
   function createArticleBlocks(blocks) {
-    // 支持来自共享数据结构的普通段落和项目符号摘要.
+    // 支持段落、列表和图片三种内容块
     return blocks.map(function (block) {
-      var parts = ['<section class="article-block">', "<h2>" + block.heading + "</h2>"];
+      var parts = ['<section class="article-block">'];
+
+      if (block.heading) {
+        parts.push("<h2>" + block.heading + "</h2>");
+      }
 
       if (Array.isArray(block.paragraphs)) {
         parts = parts.concat(block.paragraphs.map(function (paragraph) {
@@ -98,6 +102,15 @@
         parts.push('<ul class="article-list">' + block.list.map(function (item) {
           return "<li>" + item + "</li>";
         }).join("") + "</ul>");
+      }
+
+      if (block.image && block.image.src) {
+        var alt = block.image.alt || "";
+        parts.push('<figure class="article-figure"><img src="' + block.image.src + '" alt="' + alt + '">');
+        if (alt) {
+          parts.push('<figcaption>' + alt + '</figcaption>');
+        }
+        parts.push('</figure>');
       }
 
       parts.push("</section>");

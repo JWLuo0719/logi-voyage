@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>写文章 | Logi Voyage</title>
+  <meta name="description" content="在线编写新文章，生成标准 JSON 数据后粘贴到 data.js 即可发布。">
+  <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/home.css">
+</head>
+<body data-page="editor">
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span class="brand-text">
+          <strong>Logi Voyage</strong>
+          <small>Personal Blog</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-label="切换导航">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">首页</a>
+        <a href="posts.html">文章</a>
+        <a class="is-active" href="editor.html">写文章</a>
+        <a href="profile.html">关于我</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-banner page-banner-split">
+        <div class="page-banner-copy">
+          <p class="eyebrow">Post Editor</p>
+          <h1>写一篇新文章。</h1>
+          <p>填写下方表单，支持段落、列表和图文混排。生成 JSON 后粘贴到 <code>scripts/data.js</code> 的 <code>BLOG_POSTS</code> 数组中即可发布。</p>
+        </div>
+        <div class="page-banner-side">
+          <article class="mini-info-card">
+            <span class="post-category">Workflow</span>
+            <h3>发布流程</h3>
+            <ul class="plain-list compact-list">
+              <li>填写文章信息和正文</li>
+              <li>可插入段落、列表、图片</li>
+              <li>图片需手动放入 assets/</li>
+              <li>点击「生成 JSON」</li>
+              <li>粘贴到 data.js 中保存</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- 基本信息 -->
+      <section class="section-grid editor-section">
+        <div class="section-heading">
+          <p class="eyebrow">Basic Info</p>
+          <h2>基本信息</h2>
+        </div>
+        <div class="editor-form-grid">
+          <div class="editor-field">
+            <label for="editor-id">文章 ID</label>
+            <input id="editor-id" type="text" placeholder="例如：my-new-post（用于 URL ?id= 参数）">
+          </div>
+          <div class="editor-field">
+            <label for="editor-title">标题</label>
+            <input id="editor-title" type="text" placeholder="文章标题">
+          </div>
+          <div class="editor-field">
+            <label for="editor-category">分类</label>
+            <input id="editor-category" type="text" placeholder="例如：AI 工具、学习记录、开发实践">
+          </div>
+          <div class="editor-field">
+            <label for="editor-date">发布日期</label>
+            <input id="editor-date" type="date">
+          </div>
+          <div class="editor-field">
+            <label for="editor-readtime">阅读时长</label>
+            <input id="editor-readtime" type="text" placeholder="例如：5 min">
+          </div>
+          <div class="editor-field">
+            <label for="editor-cover">封面图路径</label>
+            <input id="editor-cover" type="text" placeholder="例如：assets/hero-gpt-image2.png">
+          </div>
+          <div class="editor-field editor-field--full">
+            <label for="editor-summary">摘要</label>
+            <textarea id="editor-summary" rows="3" placeholder="一句话描述文章内容"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 正文内容块 -->
+      <section class="section-grid editor-section">
+        <div class="section-heading section-heading-inline">
+          <div>
+            <p class="eyebrow">Content Blocks</p>
+            <h2>正文内容</h2>
+          </div>
+          <button id="add-block" class="button button-secondary" type="button">+ 添加内容块</button>
+        </div>
+        <div id="blocks-container" class="editor-blocks"></div>
+      </section>
+
+      <!-- 操作按钮 -->
+      <section class="section-grid editor-section editor-actions">
+        <button id="btn-generate" class="button button-primary" type="button">生成 JSON</button>
+        <button id="btn-preview" class="button button-secondary" type="button">预览文章</button>
+        <button id="btn-clear" class="button button-secondary" type="button">清空表单</button>
+      </section>
+
+      <!-- JSON 输出 -->
+      <section id="output-section" class="section-grid editor-section" style="display:none;">
+        <div class="section-heading section-heading-inline">
+          <div>
+            <p class="eyebrow">Output</p>
+            <h2>生成的 JSON</h2>
+          </div>
+          <button id="btn-copy" class="button button-secondary" type="button">复制到剪贴板</button>
+        </div>
+        <pre id="json-output" class="editor-json-output"></pre>
+        <p class="editor-hint">复制上方内容，粘贴到 <code>scripts/data.js</code> 中 <code>];</code> 之前，记得在前面加一个逗号。</p>
+      </section>
+
+      <!-- 预览区域 -->
+      <section id="preview-section" class="section-grid editor-section" style="display:none;">
+        <div class="section-heading">
+          <p class="eyebrow">Preview</p>
+          <h2>文章预览</h2>
+        </div>
+        <div id="preview-container" class="editor-preview"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div>
+        <strong>Logi Voyage</strong>
+        <p>写完文章后记得把 JSON 粘贴到 data.js 中保存。</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">返回首页</a>
+        <a href="posts.html">查看文章</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="scripts/data.js"></script>
+  <script src="scripts/site.js"></script>
+  <script src="scripts/editor.js"></script>
+</body>
+</html>
