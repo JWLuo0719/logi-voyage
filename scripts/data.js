@@ -3,7 +3,7 @@ window.BLOG_POSTS = [
     id: "ai-fix-ai",
     title: "Claude Code 挂了，我让 Codex 来修它",
     category: "AI 工具",
-    date: "2026-05-06",
+    date: "2026-05-22",
     readTime: "4 min",
     summary: "VSCode 里的 Claude Code 插件突然打不开，我换了个思路——让 Codex 来修它。两分钟定位问题，顺手写了个修复脚本。",
     cover: "assets/hero-gpt-image2.png",
@@ -41,35 +41,62 @@ window.BLOG_POSTS = [
   },
   {
     id: "codex-install-guide",
-    title: "Codex 安装教程：比 Claude Code 便宜 36 倍，国内直连",
+    title: "Codex 国内版安装指南：三个版本怎么选、怎么装、怎么省到最多钱",
     category: "AI 工具",
     date: "2026-05-08",
-    readTime: "5 min",
-    summary: "为什么我从 Claude Code 切换到 Codex？便宜 36 倍、对中国用户更友好、两个工具互为备份。附完整安装步骤。",
+    readTime: "15 min",
+    summary: "Codex 有三个版本（CLI、VS Code 插件、桌面版），本文解决怎么选、怎么装、怎么把成本压到最低（搭配中转站，GPT 模型价格可以是官方的 1/36）。",
     cover: "assets/hero-gpt-image2.png",
     content: [
       {
-        heading: "为什么用 Codex 而不用 Claude Code",
+        heading: "为什么选 Codex 而不是 Claude Code",
         paragraphs: [
-          "你可能会问，Claude Code 不是更强、网上教程更多吗，为什么要用 Codex？原因有三。",
-          "第一，便宜得多。CC 和 Codex 本身的官方定价就有 6 倍以上的差距，但真正拉开差距的是中转站——我现在用的中转站，GPT 模型跟官方价差了 36 倍。性价比才是王道。",
-          "第二，对中国用户更友好。OpenAI 是国外御三家大模型中对中国最友好的，而 Claude 则是封号、政策最严的。第三，更保险——两个工具都装，互为备份、优势互补，才是最稳的方案。"
+          "Claude Code 综合能力更强，Codex 性价比更高、对国内用户更友好。",
+          "价格差距巨大——GPT-5.4 的官方价格是输入 $2.50/百万 token、输出 $15.00/百万 token，换算成人民币大约是输入 ¥18、输出 ¥108。通过中转站使用，价格可以降到输入 ¥0.5、输出 ¥3——36 倍的差距。",
+          "对中国用户更友好。在主流的几家国外大模型厂商中，OpenAI 对中国用户的态度算是相对正常的。你正常注册、正常使用，基本不会出问题。Claude 这边封号比较频繁，政策限制也多。",
+          "互为备份更保险。Claude Code 在代码理解和复杂推理上确实更强，Codex 在性价比和可用性上更有优势。最稳的方案是两个都装，一个挂了另一个顶上。"
+        ]
+      },
+      {
+        heading: "三个版本的区别",
+        list: [
+          "CLI 版（命令行版）：适合终端重度用户、服务器上写代码的人。在项目目录下直接输入命令，让 Codex 帮你改代码、查文件、跑脚本。安装方式：npm i -g @openai/codex。",
+          "VS Code 插件版：适合日常用 VS Code 写代码的开发者。装完之后在 VS Code 侧边栏多一个 Codex 面板，直接在编辑器里跟 AI 对话。可以跟 Claude Code 插件共存。",
+          "桌面版：适合把 Codex 当独立工作台的人。一个独立的应用程序，不依赖任何编辑器，适合同时管多个项目。去 OpenAI 官网下载对应系统的安装包。",
+          "推荐：不确定的话先装 VS Code 插件版（最通用）。如果你已经装过 Claude Code 的 CLI 和插件版，装 Codex 会轻松很多。"
         ]
       },
       {
         heading: "VS Code 插件版安装步骤",
         list: [
-          "第一步：装 Codex 插件。打开 VS Code，扩展市场搜 Codex，找到 OpenAI 出的那个，安装。装完侧边栏会多一个图标，国内网络也能加载成功。",
-          "第二步：装 ccswitch。加载完后会提示登录或使用 API Key，先关掉 VS Code，去 GitHub 搜索 cc-switch 下载安装——这是一个方便切换中转站的工具。",
-          "第三步：注册 RightCode 中转站。老牌中转站，GPT 模型价格是官方的 1/36，按量计费，最低起充一块钱。注册时填邀请码 voyagekit，充值可多获得 5% 额度。",
-          "第四步：在令牌管理创建密钥，打开 ccswitch，点击 GPT 图标，右上角 + 号添加供应商，选预设的 RightCode，填入 API Key，重新打开 VS Code 里的 Codex 验证是否可用。"
+          "第 1 步：安装 Codex 插件。打开 VS Code，按 Ctrl+Shift+X 打开扩展市场，搜索 Codex，找到 OpenAI 官方出的那个，点安装。装完后侧边栏会多一个 Codex 图标。",
+          "第 2 步：安装 ccswitch。打开后会提示登录 ChatGPT 账号或者填 API Key，先别急着登录——我们用中转站的方式更省钱。ccswitch 是一个开源的模型切换工具，让你把 Codex 的 API 请求转发到中转站。去 GitHub 搜索 cc-switch 或直接访问 https://github.com/farion1231/cc-switch 下载安装。",
+          "第 3 步：注册中转站。推荐 RightCode（https://www.right.codes/register?aff=voyagekit）——老牌中转站，按量计费，最低起充 1 块钱。GPT-5.4 输入 ¥0.5/百万 token、输出 ¥3/百万 token，是官方价格的 1/36（价格以注册时中转站实际显示为准）。注册时填写邀请码 voyagekit，以后每次充值都可以多获得 5% 的额度。注册后在「获取订阅」先充一块钱，然后在「令牌管理」创建一个 API Key。",
+          "第 4 步：配置 ccswitch。打开 ccswitch，点击 GPT 图标，点击右上角的 + 号添加供应商，在预设供应商列表中找到 RightCode，填入 API Key，点击添加。",
+          "第 5 步：验证使用。重新打开 VS Code 里的 Codex，选择模型，试试能不能正常对话。如果能正常回复，说明配置成功。"
         ]
       },
       {
-        heading: "价格对比参考",
+        heading: "CLI 版与桌面版安装",
+        list: [
+          "CLI 版：先确保电脑装了 Node.js，终端执行 npm i -g @openai/codex，装完输入 codex，首次运行会引导你登录或配置 API Key，同样可以通过 ccswitch 接中转站。",
+          "桌面版：去 OpenAI 官网下载 Codex 桌面版（支持 Windows 和 macOS），Windows 用户也可以在微软商店上下载。安装后打开，需要加载一段时间，桌面版跟插件版共用同一个账号，不用重复配置。"
+        ]
+      },
+      {
+        heading: "常见问题",
+        list: [
+          "国内网络能用吗？可以。Codex 的 VS Code 插件版在国内网络下能加载成功，只是加载较慢。",
+          "中转站安全吗？中转站本质上是 API 代理，你的代码不会经过中转站——它只是转发 API 请求。但建议选择老牌、口碑好的中转站。",
+          "Codex 和 Claude Code 能同时装吗？完全可以，而且建议同时装。两个工具各有长短，互为备份最稳。",
+          "ccswitch 还支持哪些中转站？ccswitch 内置了多个中转站的预设，rightcode 只是其中之一。你也可以手动添加其他中转站。"
+        ]
+      },
+      {
+        heading: "总结",
         paragraphs: [
-          "GPT-4.1 输入 ¥0.5 vs 官方 ~¥18，输出 ¥3 vs 官方 ~¥108，差距约 36 倍。这不是小数目——如果你每天都在用 AI 写代码，一个月下来差的是几百块。",
-          "CC 更强但贵，Codex 更省但够用。两个都装，根据任务选工具，才是现阶段最合理的配置。"
+          "Claude Code 更强，但是 Codex 更好——性价比更高、对国内用户更友好。",
+          "总共 5 步，很快就能搞定。以后每次用 Codex 都是中转站的价格，省下来的钱相当可观。"
         ]
       }
     ]

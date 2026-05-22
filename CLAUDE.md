@@ -29,9 +29,9 @@ python -m http.server 8000  # 需要 Python
 
 ### 数据驱动
 
-所有文章数据集中在 `scripts/data.js` 的 `window.BLOG_POSTS` 数组中。每篇文章包含 `id`、`title`、`category`、`date`、`readTime`、`summary`、`cover`、`content` 字段。`content` 是由 heading + paragraphs/list 组成的块数组。
+所有文章数据集中在 `scripts/data.js` 的 `window.BLOG_POSTS` 数组中。每篇文章包含 `id`、`title`、`category`、`date`、`readTime`、`summary`、`cover`、`content` 字段。`content` 是由内容块组成的数组，每个块包含 `heading` 和以下三种类型之一：`paragraphs`（段落数组）、`list`（列表项数组）、`image`（含 `src` 字段）。
 
-添加新文章只需在 `BLOG_POSTS` 数组中追加对象，三个页面自动生效。
+添加新文章只需在 `BLOG_POSTS` 数组中追加对象，三个页面自动生效。编辑器页面（`editor.html`）提供可视化编辑，生成 JSON 后粘贴到 `data.js` 即可发布。编辑器支持 localStorage 草稿自动保存（2 秒防抖）和离开页面提醒。
 
 ### JS 加载顺序（每个页面相同）
 
@@ -52,3 +52,4 @@ python -m http.server 8000  # 需要 Python
 - `site.js` 中的 `createPostCard` 用字符串拼接生成 HTML，非模板字面量
 - 文章详情页通过 `URLSearchParams` 读取 `?id=` 参数匹配数据
 - `scripts/image-relay.config.json` 已被 gitignore，包含 API 密钥配置
+- `scripts/` 下还有辅助脚本：`build_course_report.py`（生成课程报告 .docx，依赖 python-docx）、PowerShell 图片生成脚本
