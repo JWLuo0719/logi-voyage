@@ -74,8 +74,9 @@
     '    <div class="sidebar-card">',
     '      <span class="post-category">Author</span>',
     "      <h3>继续了解我</h3>",
-    '      <p>如果你想继续看这个博客的整体方向，可以再看看关于页和主页里的账号入口。</p>',
+    '      <p>如果你想继续看这个博客的整体方向，可以再看看关于页；如果想直接找工具和学习资料，可以打开 VoyageKit 资源库。</p>',
     '      <a class="text-link" href="profile.html">查看关于页</a>',
+    '      <a class="text-link" href="https://link3.cc/voyagekit" target="_blank" rel="noreferrer">打开资源库</a>',
     "    </div>",
     "  </aside>",
     "</section>"

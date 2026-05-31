@@ -125,6 +125,17 @@ body.home-page .social-link--douyin strong {
   color: #7a1830;
 }
 
+body.home-page .social-link--voyagekit {
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(20, 184, 166, 0.12)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(20, 184, 166, 0.18);
+}
+
+body.home-page .social-link--voyagekit strong {
+  color: #125e72;
+}
+
 body.home-page .social-link--wechat {
   background:
     linear-gradient(135deg, rgba(7, 193, 96, 0.14), rgba(119, 226, 168, 0.08)),
@@ -214,7 +225,7 @@ body.home-page .home-feature-grid {
 
 .profile-social-section .account-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -275,6 +286,18 @@ body.home-page .home-feature-grid {
 .account-card--douyin .feature-tag,
 .account-card--douyin h3 {
   color: #7a1830;
+}
+
+.account-card--voyagekit {
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(20, 184, 166, 0.12)),
+    rgba(255, 255, 255, 0.9);
+  border-color: rgba(20, 184, 166, 0.18);
+}
+
+.account-card--voyagekit .feature-tag,
+.account-card--voyagekit h3 {
+  color: #125e72;
 }
 
 .account-card--wechat {
