@@ -3,12 +3,19 @@
   var btnAddBlock = document.getElementById("add-block");
   var btnGenerate = document.getElementById("btn-generate");
   var btnPreview = document.getElementById("btn-preview");
+  var btnExport = document.getElementById("btn-export");
   var btnClear = document.getElementById("btn-clear");
   var btnCopy = document.getElementById("btn-copy");
+  var btnCopyPlatform = document.getElementById("btn-copy-platform");
   var outputSection = document.getElementById("output-section");
   var jsonOutput = document.getElementById("json-output");
   var previewSection = document.getElementById("preview-section");
   var previewContainer = document.getElementById("preview-container");
+  var platformExportSection = document.getElementById("platform-export-section");
+  var platformExportOutput = document.getElementById("platform-export-output");
+  var platformExportLabel = document.getElementById("platform-export-label");
+  var platformExportNote = document.getElementById("platform-export-note");
+  var platformTabs = document.querySelectorAll(".platform-tab");
 
   if (!blocksContainer) return;
 
@@ -154,8 +161,16 @@
   });
   btnGenerate.addEventListener("click", generateJSON);
   btnPreview.addEventListener("click", previewArticle);
+  btnExport.addEventListener("click", exportPlatforms);
   btnClear.addEventListener("click", clearForm);
   btnCopy.addEventListener("click", copyJSON);
+  btnCopyPlatform.addEventListener("click", copyPlatformExport);
+
+  for (var tabIndex = 0; tabIndex < platformTabs.length; tabIndex++) {
+    platformTabs[tabIndex].addEventListener("click", function () {
+      setPlatformFormat(this.getAttribute("data-export-format"));
+    });
+  }
 
   function addBlock() {
     var index = blocksContainer.children.length;
@@ -353,6 +368,7 @@
     jsonOutput.textContent = json;
     outputSection.style.display = "";
     previewSection.style.display = "none";
+    platformExportSection.style.display = "none";
     outputSection.scrollIntoView({ behavior: "smooth" });
   }
 
@@ -360,11 +376,22 @@
     var text = jsonOutput.textContent;
     if (!text) return;
 
+    copyText(text, btnCopy, "复制到剪贴板", function () {
+      onCopySuccess();
+    });
+  }
+
+  function copyPlatformExport() {
+    if (!platformExportOutput || !platformExportOutput.value) return;
+    copyText(platformExportOutput.value, btnCopyPlatform, "复制当前内容");
+  }
+
+  function copyText(text, button, defaultLabel, callback) {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(function () {
-        btnCopy.textContent = "已复制!";
-        setTimeout(function () { btnCopy.textContent = "复制到剪贴板"; }, 2000);
-        onCopySuccess();
+        button.textContent = "已复制!";
+        setTimeout(function () { button.textContent = defaultLabel; }, 2000);
+        if (callback) callback();
       });
     } else {
       var ta = document.createElement("textarea");
@@ -373,9 +400,9 @@
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
-      btnCopy.textContent = "已复制!";
-      setTimeout(function () { btnCopy.textContent = "复制到剪贴板"; }, 2000);
-      onCopySuccess();
+      button.textContent = "已复制!";
+      setTimeout(function () { button.textContent = defaultLabel; }, 2000);
+      if (callback) callback();
     }
   }
 
@@ -390,6 +417,7 @@
 
     outputSection.style.display = "none";
     previewSection.style.display = "";
+    platformExportSection.style.display = "none";
 
     var articleHTML = [
       '<section class="post-hero post-hero-refined">',
@@ -422,6 +450,263 @@
 
     previewContainer.innerHTML = articleHTML;
     previewSection.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function exportPlatforms() {
+    var data = collectData();
+    if (!data) return;
+
+    outputSection.style.display = "none";
+    previewSection.style.display = "none";
+    platformExportSection.style.display = "";
+    setPlatformFormat(getActivePlatformFormat() || "markdown");
+    platformExportSection.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function getActivePlatformFormat() {
+    for (var i = 0; i < platformTabs.length; i++) {
+      if (platformTabs[i].className.indexOf("is-active") >= 0) {
+        return platformTabs[i].getAttribute("data-export-format");
+      }
+    }
+    return "markdown";
+  }
+
+  function setPlatformFormat(format) {
+    var data = collectData();
+    if (!data) return;
+
+    for (var i = 0; i < platformTabs.length; i++) {
+      var isCurrent = platformTabs[i].getAttribute("data-export-format") === format;
+      platformTabs[i].className = isCurrent ? "platform-tab is-active" : "platform-tab";
+    }
+
+    var pack = buildPlatformExport(data, format);
+    platformExportLabel.textContent = pack.label;
+    platformExportNote.textContent = pack.note;
+    platformExportOutput.value = pack.content;
+  }
+
+  function buildPlatformExport(data, format) {
+    if (format === "wechat") {
+      return {
+        label: "公众号 HTML",
+        note: "适合粘贴到公众号编辑器，或交给公众号草稿箱 API 继续处理。",
+        content: toWechatHTML(data)
+      };
+    }
+    if (format === "zhihu") {
+      return {
+        label: "知乎 HTML",
+        note: "适合粘贴到知乎编辑器；自动发布建议只作为实验功能。",
+        content: toZhihuHTML(data)
+      };
+    }
+    if (format === "xhs") {
+      return {
+        label: "小红书文案",
+        note: "适合搭配封面和卡片图，在小红书创作服务平台或 App 内人工发布。",
+        content: toXiaohongshuCopy(data)
+      };
+    }
+    return {
+      label: "Markdown",
+      note: "适合归档、二次编辑，或交给发布脚本继续处理。",
+      content: toMarkdown(data)
+    };
+  }
+
+  function toMarkdown(data) {
+    var lines = [];
+    lines.push("# " + data.title);
+    lines.push("");
+    lines.push("> " + data.summary);
+    lines.push("");
+    lines.push("- 分类：" + data.category);
+    lines.push("- 日期：" + data.date);
+    lines.push("- 阅读时长：" + data.readTime);
+    if (data.cover) lines.push("- 封面：" + data.cover);
+    lines.push("");
+
+    for (var i = 0; i < data.content.length; i++) {
+      var block = data.content[i];
+      if (block.heading) {
+        lines.push("## " + block.heading);
+        lines.push("");
+      }
+      if (block.paragraphs) {
+        for (var p = 0; p < block.paragraphs.length; p++) {
+          lines.push(block.paragraphs[p]);
+          lines.push("");
+        }
+      }
+      if (block.list) {
+        for (var item = 0; item < block.list.length; item++) {
+          lines.push("- " + block.list[item]);
+        }
+        lines.push("");
+      }
+      if (block.image && block.image.src) {
+        lines.push("![" + (block.image.alt || data.title) + "](" + block.image.src + ")");
+        lines.push("");
+      }
+    }
+    return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+  }
+
+  function toWechatHTML(data) {
+    var html = [];
+    html.push('<section style="max-width: 680px; margin: 0 auto; color: #1f2933; font-size: 16px; line-height: 1.9;">');
+    html.push('<h1 style="margin: 0 0 16px; font-size: 28px; line-height: 1.35; color: #111827;">' + escapeHTML(data.title) + '</h1>');
+    html.push('<p style="margin: 0 0 20px; color: #667085;">' + escapeHTML(data.summary) + '</p>');
+    html.push('<p style="margin: 0 0 28px; color: #98a2b3; font-size: 14px;">' + escapeHTML(data.category) + ' · ' + escapeHTML(data.date) + ' · ' + escapeHTML(data.readTime) + '</p>');
+    if (data.cover) {
+      html.push('<p><img src="' + escapeHTML(data.cover) + '" alt="' + escapeHTML(data.title) + '" style="width: 100%; border-radius: 12px;"></p>');
+    }
+    html.push(blocksToHTML(data.content, "wechat"));
+    html.push('</section>');
+    return html.join("\n");
+  }
+
+  function toZhihuHTML(data) {
+    var html = [];
+    html.push('<h1>' + escapeHTML(data.title) + '</h1>');
+    html.push('<blockquote>' + escapeHTML(data.summary) + '</blockquote>');
+    html.push('<p>' + escapeHTML(data.category) + ' · ' + escapeHTML(data.date) + ' · ' + escapeHTML(data.readTime) + '</p>');
+    if (data.cover) {
+      html.push('<figure><img src="' + escapeHTML(data.cover) + '" alt="' + escapeHTML(data.title) + '"><figcaption>' + escapeHTML(data.title) + '</figcaption></figure>');
+    }
+    html.push(blocksToHTML(data.content, "zhihu"));
+    return html.join("\n");
+  }
+
+  function blocksToHTML(blocks, target) {
+    var html = [];
+    for (var i = 0; i < blocks.length; i++) {
+      var block = blocks[i];
+      if (block.heading) {
+        if (target === "wechat") {
+          html.push('<h2 style="margin: 32px 0 14px; padding-left: 12px; border-left: 4px solid #355cff; font-size: 22px; line-height: 1.4; color: #111827;">' + escapeHTML(block.heading) + '</h2>');
+        } else {
+          html.push('<h2>' + escapeHTML(block.heading) + '</h2>');
+        }
+      }
+      if (block.paragraphs) {
+        for (var p = 0; p < block.paragraphs.length; p++) {
+          if (target === "wechat") {
+            html.push('<p style="margin: 0 0 16px;">' + escapeHTML(block.paragraphs[p]) + '</p>');
+          } else {
+            html.push('<p>' + escapeHTML(block.paragraphs[p]) + '</p>');
+          }
+        }
+      }
+      if (block.list) {
+        html.push(target === "wechat" ? '<ul style="margin: 0 0 18px; padding-left: 22px;">' : '<ul>');
+        for (var item = 0; item < block.list.length; item++) {
+          html.push('<li>' + escapeHTML(block.list[item]) + '</li>');
+        }
+        html.push('</ul>');
+      }
+      if (block.image && block.image.src) {
+        if (target === "wechat") {
+          html.push('<p style="margin: 22px 0;"><img src="' + escapeHTML(block.image.src) + '" alt="' + escapeHTML(block.image.alt || "") + '" style="width: 100%; border-radius: 12px;"></p>');
+        } else {
+          html.push('<figure><img src="' + escapeHTML(block.image.src) + '" alt="' + escapeHTML(block.image.alt || "") + '">');
+          if (block.image.alt) html.push('<figcaption>' + escapeHTML(block.image.alt) + '</figcaption>');
+          html.push('</figure>');
+        }
+      }
+    }
+    return html.join("\n");
+  }
+
+  function toXiaohongshuCopy(data) {
+    var hooks = collectXhsHooks(data);
+    var tags = buildHashtags(data);
+    var lines = [];
+    lines.push("【标题】");
+    lines.push(trimText(data.title, 20));
+    lines.push("");
+    lines.push("【正文】");
+    lines.push(data.summary);
+    lines.push("");
+    for (var i = 0; i < hooks.length; i++) {
+      lines.push((i + 1) + ". " + hooks[i]);
+    }
+    lines.push("");
+    lines.push("完整长文可以回到博客继续看，发布前记得把这句改成你当前平台允许的引导方式。");
+    lines.push("");
+    lines.push("【话题】");
+    lines.push(tags.join(" "));
+    lines.push("");
+    lines.push("【图片卡片建议】");
+    lines.push("封面：" + trimText(data.title, 18));
+    for (var c = 0; c < hooks.length && c < 8; c++) {
+      lines.push("卡片 " + (c + 1) + "：" + trimText(hooks[c], 22));
+    }
+    if (data.cover) {
+      lines.push("");
+      lines.push("可用封面素材：" + data.cover);
+    }
+    return lines.join("\n");
+  }
+
+  function collectXhsHooks(data) {
+    var hooks = [];
+    for (var i = 0; i < data.content.length; i++) {
+      var block = data.content[i];
+      if (block.heading) hooks.push(block.heading);
+      if (block.list) {
+        for (var item = 0; item < block.list.length && hooks.length < 10; item++) {
+          hooks.push(block.list[item]);
+        }
+      }
+      if (block.paragraphs) {
+        for (var p = 0; p < block.paragraphs.length && hooks.length < 10; p++) {
+          hooks.push(trimText(block.paragraphs[p], 36));
+        }
+      }
+      if (hooks.length >= 10) break;
+    }
+    if (!hooks.length && data.summary) hooks.push(data.summary);
+    return hooks.slice(0, 9);
+  }
+
+  function buildHashtags(data) {
+    var tags = ["#学游纪"];
+    if (data.category) tags.push("#" + data.category.replace(/\s+/g, ""));
+    tags.push("#个人博客");
+    tags.push("#学习记录");
+    tags.push("#效率工具");
+    tags.push("#经验分享");
+    return unique(tags).slice(0, 8);
+  }
+
+  function unique(items) {
+    var seen = {};
+    var result = [];
+    for (var i = 0; i < items.length; i++) {
+      if (!seen[items[i]]) {
+        seen[items[i]] = true;
+        result.push(items[i]);
+      }
+    }
+    return result;
+  }
+
+  function trimText(text, max) {
+    if (!text) return "";
+    if (text.length <= max) return text;
+    return text.slice(0, max - 1) + "…";
+  }
+
+  function escapeHTML(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function createArticleBlocks(blocks) {
@@ -466,6 +751,7 @@
     addBlock();
     outputSection.style.display = "none";
     previewSection.style.display = "none";
+    platformExportSection.style.display = "none";
     dirty = false;
     try { localStorage.removeItem(DRAFT_KEY); } catch (err) {}
   }

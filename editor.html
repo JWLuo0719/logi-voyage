@@ -107,7 +107,31 @@
       <section class="section-grid editor-section editor-actions">
         <button id="btn-generate" class="button button-primary" type="button">生成 JSON</button>
         <button id="btn-preview" class="button button-secondary" type="button">预览文章</button>
+        <button id="btn-export" class="button button-secondary" type="button">多平台导出</button>
         <button id="btn-clear" class="button button-secondary" type="button">清空表单</button>
+      </section>
+
+      <!-- 多平台导出 -->
+      <section id="platform-export-section" class="section-grid editor-section" style="display:none;">
+        <div class="section-heading section-heading-inline">
+          <div>
+            <p class="eyebrow">Platform Export</p>
+            <h2>多平台导出</h2>
+          </div>
+          <button id="btn-copy-platform" class="button button-secondary" type="button">复制当前内容</button>
+        </div>
+        <div class="platform-export-tabs" role="tablist" aria-label="多平台导出格式">
+          <button class="platform-tab is-active" type="button" data-export-format="markdown">Markdown</button>
+          <button class="platform-tab" type="button" data-export-format="wechat">公众号 HTML</button>
+          <button class="platform-tab" type="button" data-export-format="zhihu">知乎 HTML</button>
+          <button class="platform-tab" type="button" data-export-format="xhs">小红书文案</button>
+        </div>
+        <div class="platform-export-meta">
+          <span id="platform-export-label">Markdown</span>
+          <span id="platform-export-note">适合归档、二次编辑，或交给发布脚本继续处理。</span>
+        </div>
+        <textarea id="platform-export-output" class="platform-export-output" rows="18" spellcheck="false"></textarea>
+        <p class="editor-hint">第一版只做内容适配和复制，不直接登录平台、不保存 Cookie、不自动发布。</p>
       </section>
 
       <!-- JSON 输出 -->
