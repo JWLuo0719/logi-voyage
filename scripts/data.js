@@ -1,5 +1,99 @@
 window.BLOG_POSTS = [
   {
+    id: "codex-desktop-reconnect-sandbox-fix",
+    title: "Codex Desktop 一直 Reconnecting，我把之前的代理补丁拆了",
+    category: "AI 工具",
+    date: "2026-06-28",
+    readTime: "8 min",
+    summary: "一次很像自找麻烦的排障：为了解决 Codex Desktop 的 websocket 重连，我曾经往 .codex 里塞代理变量，后来它又反过来影响 Windows sandbox。最后的修法不是继续加代理，而是拆掉旧补丁，改成 HTTP-only provider。",
+    cover: "assets/hero-gpt-image2.png",
+    content: [
+      {
+        heading: "问题不是突然来的",
+        paragraphs: [
+          "这次问题有点尴尬，因为坑是我自己早些时候埋下的。",
+          "最开始 Codex Desktop 每次打开都会 Reconnecting，好像要等五轮才肯正常工作。看日志和现象，大概率是 websocket 先连不上，等它重试超时后才切到能通信的 HTTP。为了绕过这段等待，我当时在 C:\\Users\\34590\\.codex\\.env 里写了代理变量。",
+          "当时看起来很合理：HTTP_PROXY、HTTPS_PROXY、ALL_PROXY 都指到本机代理端口。重连等待确实少了。问题是，后来 Codex Desktop 更新后，这个老补丁开始影响 Windows sandbox。"
+        ]
+      },
+      {
+        heading: "真正坏掉的是 sandbox",
+        paragraphs: [
+          "我后来看到一篇 Linux.do 帖子，里面的症状跟我很像：Codex Desktop 代理配置会被 sandbox 初始化过程读到，然后写进 .codex\\.sandbox\\setup_marker.json 里的 proxy_ports。",
+          "我这台机器上检查到的现场也对上了。.env 还在，里面是 127.0.0.1:7897。setup_marker.json 里也出现了 proxy_ports: [7897]。这就解释了为什么问题不只是联网慢，还可能牵扯到 apply_patch、沙箱初始化和一些奇怪的模块错误。",
+          "这类问题最麻烦的地方，是它看起来不像代理问题。你看到的是工具调用失败、沙箱不正常、编辑链路卡住，但源头其实是一个几天前为了加速启动写进去的 .env。"
+        ]
+      },
+      {
+        heading: "我没有直接改，先做了备份",
+        paragraphs: [
+          "这一步很重要。Codex 的配置目录里不只有一个 config.toml，还有 sessions、state_5.sqlite、sandbox marker。乱改虽然快，但回滚会很痛苦。",
+          "所以我先把 .env、.sandbox\\setup_marker.json、config.toml、sessions、state_5.sqlite 和 sqlite\\state_5.sqlite 都备份到了 C:\\Users\\34590\\.codex\\backups\\fix-sandbox-reconnect-20260625-222725。",
+          "备份完再动手，心态完全不一样。坏了能退，才敢把问题拆干净。"
+        ]
+      },
+      {
+        heading: "第一刀：删掉 .env 代理",
+        paragraphs: [
+          "我先删除了 C:\\Users\\34590\\.codex\\.env。这个文件里只有三行代理变量，没有别的配置，所以可以直接拿掉。",
+          "接着把 C:\\Users\\34590\\.codex\\.sandbox\\setup_marker.json 里的 proxy_ports 从 [7897] 改成 []。这一步是为了把 sandbox 里已经记录下来的代理端口清掉。",
+          "同时我检查了 Windows 用户级和机器级环境变量，没有发现持久的 HTTP_PROXY、HTTPS_PROXY、ALL_PROXY、NO_PROXY。也就是说，重启 Codex 后，这些代理变量不应该再被新进程继承。"
+        ]
+      },
+      {
+        heading: "第二刀：别让 Codex 再走 websocket",
+        paragraphs: [
+          "删代理只能解决 sandbox 被污染的问题。最初的 Reconnecting 还要另想办法。",
+          "这次我没有继续用 .env 代理去绕，而是在 C:\\Users\\34590\\.codex\\config.toml 里加了一个 provider：chatgpt_http。它仍然走 ChatGPT/Codex 的官方登录，但显式写了 supports_websockets = false。",
+          "关键配置其实就几项：model_provider = \"chatgpt_http\"，base_url 指向 https://chatgpt.com/backend-api/codex，wire_api = \"responses\"，requires_openai_auth = true，supports_websockets = false。这样 Codex 就不用先在 websocket 上耗几轮。"
+        ]
+      },
+      {
+        heading: "还有一个容易漏掉的点：旧会话",
+        paragraphs: [
+          "改 model_provider 之后，旧线程可能会因为 provider 名不一样而在界面里消失。帖子里也有人提到这个坑。",
+          "我检查了 sessions 和两个 SQLite 数据库，确实还有 model_provider = openai 的记录。备份之后，我只把 openai 精确改成 chatgpt_http，custom 和 rightcode 没碰。",
+          "最后的结果是：17 个 session 文件里的 81 处记录被迁移；C:\\Users\\34590\\.codex\\state_5.sqlite 和 C:\\Users\\34590\\.codex\\sqlite\\state_5.sqlite 里的 openai 线程也都改成了 chatgpt_http。这个动作不一定每个人都需要，但如果你很在意旧会话能不能继续显示，就别漏。"
+        ]
+      },
+      {
+        heading: "重启后的检查",
+        paragraphs: [
+          "改完后我重启 Codex Desktop，再检查了一遍。结果比较干净：.env 没有复活，当前 Codex 进程里没有 HTTP_PROXY、HTTPS_PROXY、ALL_PROXY、NO_PROXY，Windows 用户级和机器级环境变量也没有这些代理变量。",
+          "setup_marker.json 里的 proxy_ports 还是空数组。config.toml 能正常解析，当前 provider 是 chatgpt_http，supports_websockets 仍然是 false。",
+          "我还做了一个很小的 apply_patch 冒烟测试：创建 work/apply-patch-smoke-test.txt，再删掉。创建和删除都成功。至少从这个结果看，sandbox 和编辑链路已经恢复正常。"
+        ]
+      },
+      {
+        heading: "如果你也遇到这个问题",
+        list: [
+          "先别急着继续加代理。先检查 C:\\Users\\你的用户名\\.codex\\.env 有没有 HTTP_PROXY、HTTPS_PROXY、ALL_PROXY、NO_PROXY。",
+          "再看 .codex\\.sandbox\\setup_marker.json 里的 proxy_ports。如果那里有本机代理端口，基本就对上了。",
+          "动手前先备份 .env、setup_marker.json、config.toml、sessions 和 state_5.sqlite。",
+          "删掉只用于代理的 .env，把 proxy_ports 改成空数组。",
+          "在 config.toml 里新增 HTTP-only provider，并设置 supports_websockets = false。",
+          "重启 Codex Desktop 后再检查一次环境变量、proxy_ports 和 apply_patch。不要只看有没有报错，最好做一次实际编辑测试。"
+        ]
+      },
+      {
+        heading: "顺手说一下这篇文章怎么写的",
+        paragraphs: [
+          "我后来想把这次排障写成文章，但技术记录一不小心就会写成很像 AI 的说明书：背景、原因、步骤、总结，整整齐齐，读起来没什么人味。",
+          "所以我顺手找了一下可用的 skill。市场里能搜到 softaworks/agent-toolkit@humanizer、remove-ai-style、humanize-chinese 之类的东西，不过我本地已经有 humanizer-zh，就没有再装新的。",
+          "我用它的思路处理这篇稿子：少用“关键”“显著”“完整解决方案”这类空泛词，多保留当时的检查结果和路径；少写万能建议，多写我实际改了什么；不要把故事修得太圆，因为这件事本来就有点绕。"
+        ]
+      },
+      {
+        heading: "最后",
+        paragraphs: [
+          "这次排障给我的提醒很简单：临时补丁最好写清楚来龙去脉，不然几天后它就会变成新的问题。",
+          "当时我为了跳过 websocket 重连，把代理变量塞进 .codex\\.env。它确实解决过一个问题。后来版本变了，sandbox 的行为也变了，旧补丁就开始反咬一口。",
+          "最后真正有效的修法，不是再叠一层补丁，而是把旧补丁拆掉，把通信方式明确改成 HTTP，再把会话和 sandbox 状态整理干净。排障有时候就是这样，越急着往上加东西，越容易把自己绕进去。"
+        ]
+      }
+    ]
+  },
+  {
     id: "xianyu-wecom-ops-retrospective",
     title: "从闲鱼自动化到企业微信：一次把项目越做越窄的复盘",
     category: "项目复盘",
